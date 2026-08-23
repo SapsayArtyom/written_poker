@@ -1,0 +1,18 @@
+rules_version = '2';
+
+// Правила для разработки: читать и писать комнаты может любой авторизованный
+// пользователь (включая анонимных гостей). Игровая логика валидируется
+// в транзакциях на клиенте.
+//
+// Перед публичным релизом стоит ужесточить: проверять, что пишущий состоит
+// в room.players, и что менять game/history может только хост.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /rooms/{roomId} {
+      allow read: if request.auth != null;
+      allow create, update: if request.auth != null;
+      allow delete: if request.auth != null
+                    && resource.data.hostId == request.auth.uid;
+    }
+  }
+}

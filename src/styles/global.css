@@ -1,0 +1,986 @@
+/* ==========================================================================
+   Расписной покер — mobile-first.
+   Базовые стили рассчитаны на телефон; расширения для планшета и десктопа
+   собраны в конце файла одним медиазапросом.
+   ========================================================================== */
+
+:root {
+  --bg: #0a1120;
+  --bg-soft: #101a2c;
+  --bg-card: #142034;
+  --bg-input: #0d1524;
+  --border: #22304a;
+  --border-strong: #33456a;
+
+  --text: #eaf0fc;
+  --text-dim: #9aabc4;
+  --text-faint: #6b7d99;
+
+  --accent: #f5a524;
+  --accent-strong: #d98a0c;
+  --accent-soft: rgba(245, 165, 36, 0.14);
+  --felt-a: #12523c;
+  --felt-b: #0b3327;
+  --good: #34d399;
+  --bad: #fb7185;
+
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 18px;
+
+  /* Высота липкой нижней панели — на неё отступает контент страницы. */
+  --actionbar-h: 76px;
+  --tap: 48px;
+
+  color-scheme: dark;
+  font-family: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+  font-synthesis-weight: none;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: radial-gradient(120% 55% at 50% 0%, #1a3454 0%, var(--bg) 62%) no-repeat var(--bg);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 1.25rem;
+}
+h2 {
+  font-size: 1.1rem;
+}
+
+p {
+  margin: 0;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+a {
+  color: var(--accent);
+}
+
+code {
+  font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  font-size: 0.88em;
+  background: rgba(255, 255, 255, 0.07);
+  padding: 1px 5px;
+  border-radius: 5px;
+  word-break: break-all;
+}
+
+pre {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 12px;
+  overflow-x: auto;
+  font-size: 12px;
+  margin: 8px 0 0;
+}
+
+/* ---------- каркас ---------- */
+
+.app {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 54px;
+  padding: 8px 14px;
+  padding-top: max(8px, env(safe-area-inset-top));
+  border-bottom: 1px solid var(--border);
+  background: rgba(10, 17, 32, 0.92);
+  backdrop-filter: blur(10px);
+}
+
+.topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.topbar__brand span[aria-hidden] {
+  color: var(--accent);
+  font-size: 1.1rem;
+}
+
+.spacer {
+  flex: 1;
+  min-width: 0;
+}
+
+.page {
+  flex: 1;
+  width: 100%;
+  padding: 12px 14px calc(24px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Когда снизу липкая панель — освобождаем под неё место. */
+.page--with-actionbar {
+  padding-bottom: calc(var(--actionbar-h) + 20px + env(safe-area-inset-bottom));
+}
+
+.page--centered {
+  justify-content: center;
+  max-width: 460px;
+  margin: 0 auto;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stack--tight {
+  gap: 8px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.row--nowrap {
+  flex-wrap: nowrap;
+}
+
+/* ---------- поверхности ---------- */
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 14px;
+}
+
+.card--felt {
+  background: linear-gradient(155deg, var(--felt-a) 0%, var(--felt-b) 100%);
+  border-color: #1c6b4c;
+}
+
+.card--flat {
+  background: var(--bg-soft);
+}
+
+.card__title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--text-dim);
+}
+
+.muted {
+  color: var(--text-dim);
+}
+
+.faint {
+  color: var(--text-faint);
+  font-size: 0.8rem;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+/* ---------- кнопки ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: var(--tap);
+  padding: 0 18px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  background: #1b2942;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.12s, border-color 0.12s, opacity 0.12s;
+}
+
+.btn:active:not(:disabled) {
+  background: #24355a;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  background: var(--accent);
+  border-color: var(--accent-strong);
+  color: #1e1402;
+  font-weight: 700;
+}
+
+.btn--primary:active:not(:disabled) {
+  background: var(--accent-strong);
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text-dim);
+}
+
+.btn--danger {
+  background: transparent;
+  border-color: #7f2038;
+  color: #fda4af;
+}
+
+.btn--sm {
+  min-height: 36px;
+  padding: 0 12px;
+  font-size: 0.84rem;
+}
+
+.btn--block {
+  width: 100%;
+}
+
+.btn--icon {
+  min-height: 38px;
+  width: 38px;
+  padding: 0;
+  font-size: 1rem;
+}
+
+.linkbtn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--accent);
+  font-size: 0.85rem;
+  text-decoration: underline;
+  min-height: 0;
+}
+
+/* Липкая панель с главным действием — всегда под большим пальцем. */
+.actionbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 15;
+  display: flex;
+  gap: 8px;
+  padding: 12px 14px calc(12px + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, var(--bg) 55%, rgba(10, 17, 32, 0.86));
+  border-top: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+}
+
+.actionbar .btn {
+  flex: 1;
+}
+
+.actionbar .btn--ghost,
+.actionbar .btn--icon {
+  flex: 0 0 auto;
+}
+
+/* ---------- поля ввода ---------- */
+
+.input {
+  width: 100%;
+  min-height: var(--tap);
+  padding: 0 14px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  color: var(--text);
+  font: inherit;
+  font-size: 1rem; /* < 16px в iOS вызывает зум при фокусе */
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+
+/* ---------- переключатель разделов ---------- */
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+}
+
+.tab {
+  flex: 1;
+  min-height: 40px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.tab[aria-selected='true'] {
+  background: var(--bg-card);
+  color: var(--text);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+}
+
+/* Раздел, скрытый на телефоне переключателем, но всегда видимый на десктопе. */
+.pane--hidden {
+  display: none;
+}
+
+/* ---------- подтверждение ---------- */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: flex-end;
+  padding: 0;
+  background: rgba(4, 8, 16, 0.72);
+  backdrop-filter: blur(2px);
+}
+
+.dialog {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-strong);
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+}
+
+/* ---------- баннеры ---------- */
+
+.banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 13px;
+  border: 1px solid;
+  border-radius: var(--r-sm);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.banner--error {
+  background: rgba(251, 113, 133, 0.1);
+  border-color: rgba(251, 113, 133, 0.4);
+  color: #fecdd3;
+}
+
+.banner--info {
+  background: rgba(96, 165, 250, 0.1);
+  border-color: rgba(96, 165, 250, 0.32);
+  color: #c7ddff;
+}
+
+.banner--warn {
+  background: var(--accent-soft);
+  border-color: rgba(245, 165, 36, 0.4);
+  color: #fde3ad;
+}
+
+.banner--good {
+  background: rgba(52, 211, 153, 0.1);
+  border-color: rgba(52, 211, 153, 0.34);
+  color: #b6f2da;
+}
+
+.banner__close {
+  margin-left: auto;
+  flex: none;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  line-height: 1;
+  opacity: 0.7;
+  padding: 0 2px;
+}
+
+/* ---------- шапка раунда ---------- */
+
+.round {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.round__cards {
+  flex: none;
+  width: 62px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-md);
+  background: rgba(0, 0, 0, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 1.9rem;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.round__body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.round__kind {
+  font-size: 1.02rem;
+  font-weight: 700;
+}
+
+.round__meta {
+  font-size: 0.78rem;
+  color: rgba(234, 240, 252, 0.72);
+}
+
+.progress {
+  height: 4px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.14);
+  overflow: hidden;
+  margin-top: 12px;
+}
+
+.progress__bar {
+  height: 100%;
+  border-radius: 99px;
+  background: var(--accent);
+  transition: width 0.35s ease;
+}
+
+/* ---------- строка игрока ---------- */
+
+.prow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--tap);
+  padding: 8px 11px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--bg-input);
+}
+
+.prow--active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.prow--me {
+  box-shadow: inset 3px 0 0 var(--good);
+}
+
+.prow__seat {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #24345180;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.prow__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.95rem;
+}
+
+.prow__sub {
+  font-size: 0.78rem;
+  color: var(--text-faint);
+}
+
+.avatar {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #24345180;
+}
+
+.chip {
+  flex: none;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 99px;
+  background: #24345180;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.chip--accent {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.chip--bid {
+  background: rgba(96, 165, 250, 0.16);
+  color: #bfdbfe;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- выбор заказа ---------- */
+
+.bidgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(56px, 1fr));
+  gap: 8px;
+}
+
+.bidbtn {
+  min-height: 56px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  background: #1b2942;
+  font-size: 1.15rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.bidbtn--pass {
+  grid-column: span 2;
+  font-size: 1rem;
+}
+
+.bidbtn[aria-pressed='true'] {
+  background: var(--accent);
+  border-color: var(--accent-strong);
+  color: #1e1402;
+}
+
+.bidbtn:disabled {
+  opacity: 0.28;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+/* ---------- счётчик взяток ---------- */
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: none;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  background: #16233a;
+  overflow: hidden;
+}
+
+.stepper__btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  font-size: 1.3rem;
+  line-height: 1;
+  color: var(--text);
+}
+
+.stepper__btn:active:not(:disabled) {
+  background: #24355a;
+}
+
+.stepper__btn:disabled {
+  opacity: 0.3;
+}
+
+.stepper__value {
+  min-width: 34px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.points {
+  min-width: 52px;
+  text-align: right;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.pos {
+  color: var(--good);
+}
+.neg {
+  color: var(--bad);
+}
+.zero {
+  color: var(--text-faint);
+}
+
+/* ---------- расписка ---------- */
+
+.sheet-wrap {
+  overflow: auto;
+  max-height: 58vh;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  -webkit-overflow-scrolling: touch;
+}
+
+table.sheet {
+  border-collapse: separate;
+  border-spacing: 0;
+  /* Фиксированная раскладка: колонки игроков одинаковой ширины,
+     длинные имена обрезаются, а не растягивают таблицу. */
+  table-layout: fixed;
+  width: max-content;
+  min-width: 100%;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.sheet th,
+.sheet td {
+  padding: 6px 8px;
+  text-align: center;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+
+.sheet thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #1a2740;
+  color: var(--text-dim);
+  font-weight: 600;
+  font-size: 0.74rem;
+}
+
+/* Первый столбец — номер раунда, остаётся видимым при горизонтальной прокрутке. */
+.sheet .rc {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--bg-card);
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-dim);
+  box-shadow: 1px 0 0 var(--border);
+}
+
+/* Раздающий: первая буква имени рядом с номером раунда. */
+.rc__dealer {
+  display: inline-block;
+  min-width: 16px;
+  padding: 0 3px;
+  border-radius: 4px;
+  background: #24345180;
+  color: var(--text-faint);
+  font-size: 0.72rem;
+  text-align: center;
+}
+
+.sheet thead .rc {
+  z-index: 3;
+  background: #1a2740;
+}
+
+.sheet tbody tr.is-current td {
+  background: var(--accent-soft);
+}
+
+.sheet tbody tr.is-current .rc {
+  background: #2a2a1c;
+}
+
+.sheet tfoot td {
+  position: sticky;
+  bottom: 0;
+  background: #1a2740;
+  font-weight: 700;
+  border-top: 1px solid var(--border-strong);
+}
+
+.sheet .sum {
+  font-weight: 700;
+}
+
+/* ---------- итоги ---------- */
+
+.standing {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 10px 13px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--bg-input);
+}
+
+.standing--first {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.standing__place {
+  flex: none;
+  width: 32px;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+.standing--first .standing__place {
+  color: var(--accent);
+}
+
+.standing__total {
+  margin-left: auto;
+  font-size: 1.25rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- служебное ---------- */
+
+.spinner {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--border-strong);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.center-note {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 56px 0;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+ul.rules {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--text-dim);
+  font-size: 0.86rem;
+  line-height: 1.65;
+}
+
+ul.rules b {
+  color: var(--text);
+}
+
+.roundmap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.roundmap .chip {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ==========================================================================
+   Планшет и десктоп: двухколоночный стол, панель действий встраивается в поток.
+   ========================================================================== */
+
+@media (min-width: 900px) {
+  body {
+    font-size: 16px;
+  }
+
+  .page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 22px 24px 48px;
+    gap: 16px;
+  }
+
+  .page--with-actionbar {
+    padding-bottom: 48px;
+  }
+
+  .page--centered {
+    max-width: 440px;
+  }
+
+  .topbar {
+    min-height: 60px;
+    padding: 10px 24px;
+  }
+
+  .topbar__brand {
+    font-size: 1.05rem;
+  }
+
+  h1 {
+    font-size: 1.45rem;
+  }
+
+  .card {
+    padding: 18px;
+  }
+
+  /* Ход и расписка — рядом, переключатель не нужен. */
+  .tabs {
+    display: none;
+  }
+
+  .pane--hidden {
+    display: block;
+  }
+
+  .table-layout {
+    display: grid;
+    grid-template-columns: minmax(320px, 400px) 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+
+  .table-layout > * {
+    min-width: 0;
+  }
+
+  .actionbar {
+    position: static;
+    padding: 0;
+    border: none;
+    background: none;
+    backdrop-filter: none;
+  }
+
+  .round__cards {
+    width: 76px;
+    height: 76px;
+    font-size: 2.3rem;
+  }
+
+  .sheet-wrap {
+    max-height: 68vh;
+  }
+
+  table.sheet {
+    font-size: 0.86rem;
+  }
+
+  .sheet thead th .truncate {
+    max-width: none;
+  }
+
+  .bidgrid {
+    grid-template-columns: repeat(auto-fit, minmax(52px, 1fr));
+  }
+
+  /* На большом экране подтверждение — обычное модальное окно по центру. */
+  .overlay {
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .dialog {
+    max-width: 420px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--r-lg);
+    padding: 22px;
+  }
+}
