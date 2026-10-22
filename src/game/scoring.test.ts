@@ -26,9 +26,10 @@ describe('очки за раунд (примеры из ТЗ)', () => {
     expect(scorePlayerRound({ bid: 3, taken: 1, kind: T })).toBe(-20);
   });
 
-  it('перебор: заказ оплачен + 1 очко за лишнюю взятку', () => {
-    expect(scorePlayerRound({ bid: 2, taken: 3, kind: T })).toBe(21);
-    expect(scorePlayerRound({ bid: 2, taken: 4, kind: T })).toBe(22);
+  it('перебор: заказ не оплачивается, по 1 очку за каждую взятку', () => {
+    expect(scorePlayerRound({ bid: 1, taken: 2, kind: T })).toBe(2);
+    expect(scorePlayerRound({ bid: 2, taken: 3, kind: T })).toBe(3);
+    expect(scorePlayerRound({ bid: 2, taken: 4, kind: T })).toBe(4);
   });
 
   it('пас не удержан: по 1 очку за каждую взятку', () => {
@@ -54,7 +55,7 @@ describe('множители спецраундов', () => {
   });
 
   it('лишние взятки множитель не увеличивает', () => {
-    expect(scorePlayerRound({ bid: 1, taken: 2, kind: ROUND_KIND.GOLD })).toBe(51);
+    expect(scorePlayerRound({ bid: 1, taken: 2, kind: ROUND_KIND.GOLD })).toBe(2);
     expect(scorePlayerRound({ bid: 0, taken: 2, kind: ROUND_KIND.GOLD })).toBe(2);
   });
 });
@@ -79,7 +80,7 @@ describe('мизера: заказа нет, взятки штрафуются',
 
 describe('правила переопределяются', () => {
   it('перебор можно обнулить', () => {
-    expect(scorePlayerRound({ bid: 2, taken: 3, kind: T, rules: { extraTrickValue: 0 } })).toBe(20);
+    expect(scorePlayerRound({ bid: 2, taken: 3, kind: T, rules: { extraTrickValue: 0 } })).toBe(0);
   });
 
   it('штраф в мизерах настраивается', () => {

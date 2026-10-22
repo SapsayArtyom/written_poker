@@ -8,7 +8,7 @@ import type { HistoryEntry, Player, Round, RoundKind, Rules, Scores, Uid } from 
  *   заказал N, взял ровно N   -> N * 10 * множитель
  *   пас (0) и не взял         -> 5 * множитель
  *   недобор                   -> -10 * (заказ - взято) * множитель
- *   перебор                   -> заказ оплачен + 1 очко за каждую лишнюю взятку
+ *   перебор                   -> +1 очко за каждую взятку (заказ не оплачивается)
  *   пас, но взял взятки       -> +1 очко за каждую взятку (пас не оплачивается)
  *
  * Мизера — особый раунд: заказа нет, все играют на минимум взяток.
@@ -46,16 +46,15 @@ export function scorePlayerRound({ bid, taken, kind, rules }: ScoreInput): numbe
     return taken === 0 ? r.passValue * m : -r.misereTrickPenalty * taken * m;
   }
 
-  if (bid === 0) {
-    // Пас. Удержал — очки за пас; не удержал — только по очку за взятку.
-    return taken === 0 ? r.passValue * m : taken * extraValue;
-  }
+  // Пас удержан.
+  if (bid === 0 && taken === 0) return r.passValue * m;
 
   if (taken === bid) return bid * r.trickValue * m;
   if (taken < bid) return -(bid - taken) * r.undertrickValue * m;
 
-  // Перебор: заказ оплачен, лишние взятки идут дешёвыми очками.
-  return bid * r.trickValue * m + (taken - bid) * extraValue;
+  // Перебор (в том числе сорванный пас): заказ не оплачивается,
+  // каждая взятка идёт дешёвым очком.
+  return taken * extraValue;
 }
 
 export interface RoundScoreInput {

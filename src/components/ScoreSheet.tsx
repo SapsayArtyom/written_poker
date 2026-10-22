@@ -14,7 +14,8 @@ function initial(name: string | undefined): string {
 }
 
 /**
- * Расписка: строка на раунд, на каждого игрока «заказ/взял» и накопленная сумма.
+ * Расписка: строка на раунд, на каждого игрока «заказ/взял» и очки за раунд
+ * (накопленная сумма — во всплывающей подсказке).
  * Колонки игроков одинаковой ширины, имена при нехватке места обрезаются.
  * Первый столбец липкий — при горизонтальной прокрутке видно, какой это раунд
  * и кто его раздавал.
@@ -67,7 +68,7 @@ export default function ScoreSheet({ view }: { view: RoomView }) {
                   з/в
                 </th>,
                 <th key={`${p.uid}-sum`} style={{ fontWeight: 400 }}>
-                  Σ
+                  оч
                 </th>,
               ])}
             </tr>
@@ -96,18 +97,15 @@ export default function ScoreSheet({ view }: { view: RoomView }) {
                       const taken = entry.tricks?.[p.uid] ?? 0;
                       const bid = entry.bids?.[p.uid];
                       const score = entry.scores?.[p.uid] ?? 0;
+                      const total = runningTotals[i]?.[p.uid] ?? 0;
                       return [
-                        <td key={`${p.uid}-bt`} title={`Очки за раунд: ${score}`}>
+                        <td key={`${p.uid}-bt`}>
                           <span className={score < 0 ? 'neg' : undefined}>
                             {bid === undefined ? taken : `${bid}/${taken}`}
                           </span>
                         </td>,
-                        <td key={`${p.uid}-sum`} className="sum">
-                          <Points
-                            value={runningTotals[i]?.[p.uid] ?? 0}
-                            showPlus={false}
-                            className=""
-                          />
+                        <td key={`${p.uid}-sum`} className="sum" title={`Сумма после раунда: ${total}`}>
+                          <Points value={score} className="" />
                         </td>,
                       ];
                     }
