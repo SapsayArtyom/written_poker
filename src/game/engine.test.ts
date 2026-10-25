@@ -257,7 +257,7 @@ describe('мизера', () => {
     );
   });
 
-  it('очки: кто не взял — плюс 10, взятки по -20', () => {
+  it('очки: кто не взял — плюс 50, взятки по -20', () => {
     let room = atMisere();
     room = applyPatch(
       room,
@@ -265,7 +265,7 @@ describe('мизера', () => {
     );
     const entry = room.history.at(-1)!;
     expect(entry.kind).toBe(ROUND_KIND.MISERE);
-    expect(entry.scores).toEqual({ u0: -180, u1: 10, u2: 10, u3: 10 });
+    expect(entry.scores).toEqual({ u0: -180, u1: 50, u2: 50, u3: 50 });
   });
 
   it('во вью нет активного заказывающего', () => {

@@ -67,7 +67,7 @@ export default function ResultsPanel({
       {isMisere && (
         <div className="banner banner--warn">
           Мизера: заказа нет. Кто не взял ни одной взятки — плюс{' '}
-          {rules.passValue * game.roundMeta.multiplier}, каждая взятка —{' '}
+          {rules.misereCleanValue}, каждая взятка —{' '}
           −{rules.misereTrickPenalty * game.roundMeta.multiplier}.
         </div>
       )}

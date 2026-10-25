@@ -249,7 +249,7 @@ describe('мизера', () => {
     expect(screen.queryByText('Ваш заказ')).toBe(null);
     expect(screen.queryByRole('button', { name: 'пас' })).toBe(null);
 
-    // Все 18 взяток забирает Боря: у него −360, у Ани +10.
+    // Все 18 взяток забирает Боря: у него −360, у Ани +50.
     for (let i = 0; i < 18; i += 1) {
       await user.click(screen.getByRole('button', { name: 'Больше взяток у Боря' }));
     }
@@ -259,7 +259,7 @@ describe('мизера', () => {
     const misere = readRoom().history.at(-1)!;
     expect(misere.kind).toBe(ROUND_KIND.MISERE);
     expect(misere.bids).toEqual({});
-    expect(Object.values(misere.scores).sort((a, b) => a - b)).toEqual([-360, 10]);
+    expect(Object.values(misere.scores).sort((a, b) => a - b)).toEqual([-360, 50]);
   });
 });
 

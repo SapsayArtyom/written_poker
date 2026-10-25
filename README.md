@@ -160,10 +160,10 @@ cd firebase && firebase emulators:start --only auth,firestore
 Особый раунд: **заказа нет**, все стараются не взять ни одной взятки. Раунд
 сразу открывается на вводе взяток, минуя фазу заказа.
 
-- не взял ни одной → **+10** (пас с множителем ×2)
+- не взял ни одной → **+50** (без множителя)
 - каждая взятая взятка → **−20**
 
-Числа берутся из `passValue` и `misereTrickPenalty`; если у вас за столом
+Числа берутся из `misereCleanValue` и `misereTrickPenalty`; если у вас за столом
 считают иначе, всё правится в `DEFAULT_RULES`
 ([src/game/scoring.ts](src/game/scoring.ts)) — весь подсчёт идёт через одну
 функцию `scorePlayerRound`.

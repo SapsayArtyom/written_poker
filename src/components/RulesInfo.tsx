@@ -42,7 +42,7 @@ export default function RulesInfo({
           Б и Т → <b>×2</b>, З (золотые) → <b>×5</b>
         </li>
         <li>
-          М (мизера) → заказа нет: не взял → <b>{rules.passValue * 2}</b>, каждая взятка →{' '}
+          М (мизера) → заказа нет: не взял → <b>{rules.misereCleanValue}</b>, каждая взятка →{' '}
           <b>−{rules.misereTrickPenalty * 2}</b>
         </li>
         <li>Сумма заказов не может быть равна числу розданных карт</li>

@@ -63,8 +63,8 @@ describe('множители спецраундов', () => {
 describe('мизера: заказа нет, взятки штрафуются', () => {
   const kind = ROUND_KIND.MISERE;
 
-  it('не взял ни одной -> 10 (пас с множителем 2)', () => {
-    expect(scorePlayerRound({ bid: 0, taken: 0, kind })).toBe(10);
+  it('не взял ни одной -> 50', () => {
+    expect(scorePlayerRound({ bid: 0, taken: 0, kind })).toBe(50);
   });
 
   it('каждая взятка -> -20', () => {
@@ -73,7 +73,7 @@ describe('мизера: заказа нет, взятки штрафуются',
   });
 
   it('заказ не влияет на очки — его в мизерах не бывает', () => {
-    expect(scorePlayerRound({ bid: 5, taken: 0, kind })).toBe(10);
+    expect(scorePlayerRound({ bid: 5, taken: 0, kind })).toBe(50);
     expect(scorePlayerRound({ bid: 5, taken: 2, kind })).toBe(-40);
   });
 });
@@ -110,7 +110,7 @@ describe('итоги', () => {
       bids: {},
       tricks: { a: 0, b: 2 },
     });
-    expect(scores).toEqual({ a: 10, b: -40 });
+    expect(scores).toEqual({ a: 50, b: -40 });
   });
 
   it('сумма по истории и распределение мест', () => {

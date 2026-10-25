@@ -12,7 +12,7 @@ import type { HistoryEntry, Player, Round, RoundKind, Rules, Scores, Uid } from 
  *   пас, но взял взятки       -> +1 очко за каждую взятку (пас не оплачивается)
  *
  * Мизера — особый раунд: заказа нет, все играют на минимум взяток.
- *   не взял ни одной          -> 5 * множитель (то есть 10)
+ *   не взял ни одной          -> 50 (без множителя)
  *   взял N                    -> -10 * N * множитель (то есть -20 за взятку)
  */
 export const DEFAULT_RULES: Rules = {
@@ -22,6 +22,7 @@ export const DEFAULT_RULES: Rules = {
   extraTrickValue: 1,
   multiplyExtras: false,
   misereTrickPenalty: 10,
+  misereCleanValue: 50,
 };
 
 export function roundMultiplier(kind: RoundKind): number {
@@ -43,7 +44,7 @@ export function scorePlayerRound({ bid, taken, kind, rules }: ScoreInput): numbe
 
   // Мизера: заказа нет, каждая взятка — штраф.
   if (kind === ROUND_KIND.MISERE) {
-    return taken === 0 ? r.passValue * m : -r.misereTrickPenalty * taken * m;
+    return taken === 0 ? r.misereCleanValue : -r.misereTrickPenalty * taken * m;
   }
 
   // Пас удержан.

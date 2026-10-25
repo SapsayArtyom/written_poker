@@ -46,6 +46,8 @@ export interface Rules {
   multiplyExtras: boolean;
   /** Штраф за каждую взятку в мизерах. */
   misereTrickPenalty: number;
+  /** Очки в мизерах за то, что не взял ни одной взятки (итоговые, без множителя). */
+  misereCleanValue: number;
 }
 
 export type Scores = Record<Uid, number>;
